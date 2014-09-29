@@ -1,0 +1,34 @@
+{
+  "name": "zenrequest",
+  "version": "0.9.29",
+  "description": "a lean and mean http router for node.js",
+  "homepage": "https://github.com/soyjavi/zen-request",
+  "keywords": [
+    "server",
+    "router",
+    "restful",
+    "mustache",
+    "soyjavi",
+    "mongoose",
+    "mongodb",
+    "redis",
+    "appnima",
+    "file",
+    "streaming"
+  ],
+  "author": {
+    "name": "Javi Jimenez",
+    "email": "javi@tapquo.com"
+  },
+  "dependencies": {
+    "coffee-script": "*",
+    "colors": "*",
+    "hope": "*",
+    "js-yaml": "*",
+    "request": "*"
+  },
+  "main": "./index.js",
+  "engines": {
+    "node": "*"
+  }
+}
