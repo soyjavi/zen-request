@@ -4,17 +4,16 @@ require "colors"
 Hope      = require "hope"
 request   = require "request"
 qs        = require "querystring"
-server    = global.config.environment.server
 
 module.exports = (method, url, parameters={}, headers={}, description="", expected_code=200, callback) ->
   promise = new Hope.Promise()
 
-  test.counters.current++
+  ZENrequest.counters.current++
 
   method = method.toUpperCase()
   options =
     method  : method
-    uri     : "http://#{server.host}:#{server.port}/#{url}"
+    uri     : "http://#{ZENrequest.host}:#{ZENrequest.port}/#{url}"
     headers : headers
   if parameters? and (method is "GET" or method is "DELETE")
     options.uri += "?#{qs.stringify(parameters)}"
@@ -25,14 +24,14 @@ module.exports = (method, url, parameters={}, headers={}, description="", expect
     if response
       result = JSON.parse body if body?
       if response.statusCode is expected_code
-        test.counters.success++
-        console.log "[\u2713]".green, "#{__formatNumber(test.counters.current)}".white, "#{description}".grey
+        ZENrequest.counters.success++
+        console.log " ✓ ".green, "#{__formatNumber(ZENrequest.counters.current)}".green, description.grey
         if callback? then callback.call callback, result
         promise.done null, result
       else
-        console.log "[x]".red, "#{__formatNumber(test.counters.current)}".white, "#{description}".red
+        console.log " ⚑ ".red, "#{__formatNumber(ZENrequest.counters.current)}".red, description.grey
         method = __formatMethod(method)
-        console.log "        #{method}:".grey, "http://#{server.host}:#{server.port}/#{url}"
+        console.log "        #{method}:".grey, "http://#{ZENrequest.host}:#{ZENrequest.port}/#{url}"
         __formatValues parameters
 
         console.log "        Response  :".grey, "#{response.statusCode}".red
@@ -41,7 +40,7 @@ module.exports = (method, url, parameters={}, headers={}, description="", expect
         error = code: response.statusCode, message: result.message
         promise.done error, null
     else
-      console.error "[HTTPRequestError]".red + " :: No response from server http://#{server.host}:#{server.port}/#{url}"
+      console.error "[HTTPRequestError]".red + " :: No response from server http://#{ZENrequest.host}:#{ZENrequest.port}/#{url}"
       error = code: 404, message: "No response from server"
       promise.done error, null
 
